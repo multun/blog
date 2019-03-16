@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ SITENAME }} - {% trans %}Categories{% endtrans %}{% endblock %}
+{% block archclass %} class="active"{% endblock %}
+{% block content %}
+<h1 class="entry-title">
+  {% trans %}Categories{% endtrans %}
+</h2>
+
+<div class="post-tags text-muted">
+{%- for category, articles in categories|sort %}
+<a class="post-tag" href="{{ SITEURL }}/{{ category.url }}">
+  <div class="fa fa-lg fa-folder"></div> {{ category }} <sub>{{ articles|count }}</sub>
+</a>
+{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block navclass %}active{%endblock%}
+{% block content %}
+<ul class="list-posts">
+    {% for article in articles_page.object_list %}
+        <li class="post-teaser">
+            <a href="{{ SITEURL }}/{{ article.url }}">
+                <span class="post-teaser__title">{{ article.title | striptags }}</span>
+                <span class="post-teaser__date">{{ article.locale_date }}</span>
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock content %}
