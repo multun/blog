@@ -4,6 +4,7 @@ A translated article
 :date: 2014-02-02
 :lang: fr
 :slug: translated-article
+:status: draft
 :trans_id: test
 :tags: example
 
