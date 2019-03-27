@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
+LOCALE = 'en_US.utf8'
+
 AUTHOR = 'multun'
 SITENAME = "Pancakes and computers"
 SITEURL = ''
@@ -55,14 +57,14 @@ PAGE_TRANSLATION_ID = ["trans_id"]
 
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
-PLUGINS = ["i18n_subsites"]
+PLUGINS = ["i18n_subsites", "simple_footnotes"]
 PLUGIN_PATHS = ['plugins']
 I18N_SUBSITES = {
-        'fr': { 
+        'fr': {
             'SITENAME': 'Crêpes et informatique',
-            'LOCALE': 'fr_FR.utf8',            #This is somewhat redundant with DATE_FORMATS, but IMHO more convenient
+            'LOCALE': 'fr_FR.utf8',
         },
-        # 'en': { 
+        # 'en': {
         #     'SITENAME': 'english site',
         #     'LOCALE': 'en_US',            #This is somewhat redundant with DATE_FORMATS, but IMHO more convenient
         #     'SITEURL': '../', # silly hack
