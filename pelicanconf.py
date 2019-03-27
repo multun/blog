@@ -8,6 +8,8 @@ AUTHOR = 'multun'
 SITENAME = "Pancakes and computers"
 SITEURL = ''
 
+THEME = 'my-theme'
+
 PATH = 'content'
 
 TIMEZONE = 'Europe/Paris'
