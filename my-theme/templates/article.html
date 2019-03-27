@@ -1,39 +1,55 @@
-    {% extends "base.html" %}
-    {% block title %}{{ article.title }} - {{SITENAME}}{% endblock title %}
-    {% block content %}
-    <section id="content" class="article content">
-      <header>
-        <h1 class="page-title">
-          <div class="page-title__text">{{ article.title }}</div>
-          {% if article.subtitle %}
-          <div class="page-title__subtitle">{{ article.subtitle }}</div>
-          {% endif %}
-        </h1>
+{% from 'meta.html' import head_meta with context %}
+{% extends "base.html" %}
+{% block title %}{{ article.title }} - {{SITENAME}}{% endblock title %}
+{% block head_meta -%}
+{{ head_meta(author=article.author, ) }}
+{% endblock %}
+{% block content %}
+<section id="content" class="article content">
+  <header>
+    <h1 class="page-title">
+      <div>
+        <span class="page-title__text">{{ article.title }}</span>
         {% import 'translations.html' as translations with context %}
-        {{ translations.translations_for(article) }}
-        <div class="text-muted">{{ article.locale_date }}</div>
-      </header>
-<!-- .entry-content -->
-      <div class="entry-content">
-        {{ article.content }}
+        <sub><small>{{ translations.translations_for(article) }}</small></sub>
       </div>
-<!-- /.entry-content -->
-      <div class="about">
-        <div class="about__devider">*****</div>
-        <div class="about__text">
-          Written by <strong> {% if article.author.fullname %} {{ article.author.fullname }} {% else %} {{ article.author.fullname }} {% endif %}</strong>
-          on <strong>{{ article.locale_date }}</strong>
-        </div>
-      </div>
-      <footer class="post-tags text-muted">
-        <a class="post-tag" href="{{ SITEURL }}/{{ article.category.url }}"><div class="fa fa-lg fa-folder-open"></div> {{ article.category }}</a>
-        {% if article.tags %}
-        {% for tag in article.tags %}
-        <a class="post-tag"  href="{{ SITEURL }}/{{ tag.url }}"><div class="btn btn-default fa fa-lg fa-tag"></div> {{ tag }}</a>
-        {% endfor %}
-        {% endif %}
-      </footer>
-      <!-- /.post-info -->
-      {% include 'disqus.html' %}
-    </section>
-    {% endblock %}
+      {% if article.subtitle %}
+      <div class="page-title__subtitle">{{ article.subtitle }}</div>
+      {% endif %}
+    </h1>
+  </header>
+  <div class="entry-content">
+    {{ article.content }}
+  </div>
+  {% include 'disqus.html' %}
+</section>
+{% endblock %}
+{% block footer_stars %}
+<div class="article__about">
+  {% set authors=[] %}
+  {% for author in article.authors %}
+  {% do authors.append('<a href="' ~ (SITEURL | e) ~ "/" ~ (author.url | e) ~ '">' ~ (author | e) ~ '</a>') %}
+  {% endfor %}
+  {% set authors=(("<strong>" ~ (authors | join("")) ~ "</strong>") | safe) %}
+  {% set article_date=("<strong>" ~ (article.locale_date | e) ~ "</strong>" | safe) %}
+  {% set article_category=(('<a href="' ~ (SITEURL | e) ~ "/" ~ (article.category.url | e) ~ '">' ~ (article.category | e) ~ '</a>') | safe) %}
+  {% strip false %}
+  {%- trans authors=authors, date=article_date, category=article_category -%}
+  Written by {{ authors }} on {{ date }}, in {{ category }}
+  {%- endtrans %}
+  {% endstrip %}
+  {% if article.tags|length != 0 %}
+  <br><br>
+  {% set tags=[] %}
+  {% for tag in article.tags %}
+  {% do tags.append('<a href="' ~ (SITEURL | e) ~ "/" ~ (tag.url | e) ~ '">' ~ (tag | e) ~ '</a>') %}
+  {% endfor %}
+  {% set tags=((tags | join(", ")) | safe) %}
+  {%- trans tags=tags -%}
+  Tagged as {{ tags }}
+  {%- endtrans %}
+  {% endif %}
+</div>
+
+{{ super() }}
+{% endblock %}

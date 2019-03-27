@@ -58,6 +58,27 @@ blockquote {
     }
 }
 
+/* =Inline code */
+p > code {
+  padding: .1em .3em;
+  font-size: .75em;
+  border: 1px solid $pencil;
+  border-radius: 4px;
+  word-break: break-all;
+  background-color: $dorian;
+}
+
+/* =Bigger code blocks */
+pre {
+    padding: 0.6em;
+    border: $cloudy solid 1px;
+    white-space: pre-wrap;
+    border: 1px solid $pencil;
+    border-radius: 4px;
+    word-break: break-all;
+    background-color: $dorian;
+}
+
 strong {
     color: $iron;
 }
@@ -95,6 +116,14 @@ strong {
     justify-content: center
 }
 
+.mr1em {
+    margin-right: 1em;
+}
+
+.ml1em {
+    margin-left: 1em;
+}
+
 .badge-font-size {
     font-size: 1.5em;
 }
@@ -113,7 +142,7 @@ strong {
 .menu {
     color: $cloudy;
     font-size: 18px;
-    margin:0px;
+    margin: 0.3em 0 0;
     padding: 0px;
     list-style-type: none;
 }
@@ -180,20 +209,16 @@ main {
 
 /* =Post teasers */
 
-.text-clear-up {
-    margin-top: 5em;
-}
-
 .list-posts {
     list-style-type: none;
     padding: 0px;
+    margin-top: 2em;
 }
 
 .post-teaser {
     margin-bottom: 2em;
     font-weight: 700;
 }
-
 
 .post-tags {
     display: inline-block;
@@ -216,13 +241,6 @@ main {
     color: $cloudy;
 }
 
-.empty-post-list {
-    font-size: 22px;
-    font-weight: 700;
-    color: $iron;
-    text-align: center;
-}
-
 /* =Explore */
 .explore {
     text-align: center;
@@ -238,6 +256,13 @@ main {
 .explore__label {
     font-size: 14px;
     margin-top: 15px;
+}
+
+.article__about {
+    @extends .explore__label;
+    font-size: 14px;
+    margin-top: 15px;
+    margin-bottom: 30px;
 }
 
 .categories {

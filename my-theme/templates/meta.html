@@ -1,0 +1,11 @@
+{% macro head_meta(author=AUTHOR, description=SITENAME, keywords=[]) -%}
+{% if description %}
+<meta name="description" content="{{ description }}">
+{% endif %}
+{% if author %}
+<meta name="author" content="{{ AUTHOR }}">
+{% endif %}
+{% if keywords|length != 0 %}
+<meta name="keywords" content="{{ keywords | join(',') }}">
+{% endif %}
+{%- endmacro %}

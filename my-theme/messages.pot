@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-03-05 00:08+0100\n"
+"POT-Creation-Date: 2019-03-22 10:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,38 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: templates/base.html:77
+#: templates/article.html:32
+#, python-format
+msgid "Written by %(authors)s on %(date)s, in %(category)s"
+msgstr ""
+
+#: templates/article.html:42
+#, python-format
+msgid "Tagged as %(tags)s"
+msgstr ""
+
+#: templates/author.html:5
+msgid "Articles by"
+msgstr ""
+
+#: templates/authors.html:6
+msgid "Authors"
+msgstr ""
+
+#: templates/base.html:85
 msgid "Explore the different categories"
+msgstr ""
+
+#: templates/categories.html:2 templates/categories.html:6
+msgid "Categories"
+msgstr ""
+
+#: templates/tag.html:6
+#, python-format
+msgid "Articles tagged as %(tag)s"
+msgstr ""
+
+#: templates/tags.html:6
+msgid "Tags"
 msgstr ""
 

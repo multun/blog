@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-03-05 00:08+0100\n"
+"POT-Creation-Date: 2019-03-22 10:47+0100\n"
 "PO-Revision-Date: 2019-03-05 00:09+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,7 +18,38 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: templates/base.html:77
+#: templates/article.html:32
+#, python-format
+msgid "Written by %(authors)s on %(date)s, in %(category)s"
+msgstr "Écrit par %(authors)s le %(date)s, dans %(category)s"
+
+#: templates/article.html:42
+#, python-format
+msgid "Tagged as %(tags)s"
+msgstr "Marqué comme %(tags)s"
+
+#: templates/author.html:5
+msgid "Articles by"
+msgstr "Articles par"
+
+#: templates/authors.html:6
+msgid "Authors"
+msgstr "Auteurs"
+
+#: templates/base.html:85
 msgid "Explore the different categories"
 msgstr "Explorez les différentes catégories"
+
+#: templates/categories.html:2 templates/categories.html:6
+msgid "Categories"
+msgstr "Catégories"
+
+#: templates/tag.html:6
+#, python-format
+msgid "Articles tagged as %(tag)s"
+msgstr "Articles marqués comme %(tag)s"
+
+#: templates/tags.html:6
+msgid "Tags"
+msgstr "Marqueurs"
 

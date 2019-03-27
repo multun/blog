@@ -4,9 +4,11 @@
 $dorian: #F5F5F5;
 $iron: #333333;
 $cloudy: #828282;
+$pencil: #ccc;
 
 @import
     "mixins",
     "default",
-    "404"
+    "404",
+    "./pygments"
 ;
