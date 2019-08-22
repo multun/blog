@@ -11,9 +11,13 @@ a {
   font-weight: bold;
   text-decoration: none; }
 
-p {
+p, li {
   font-size: 20px;
-  line-height: 32px; }
+  line-height: 1.2em; }
+
+h2, h3, h4, h5 {
+  margin-top: 1.5em;
+  font-size: 2em; }
 
 img {
   margin: 40px auto;
@@ -51,7 +55,7 @@ blockquote {
       content: " ”"; }
 
 /* =Inline code */
-p > code {
+p > code, li > code {
   padding: .1em .3em;
   font-size: .75em;
   border: 1px solid #ccc;
@@ -61,7 +65,8 @@ p > code {
 
 /* =Bigger code blocks */
 pre {
-  padding: 0.6em;
+  font-size: .8em;
+  padding: .6em;
   border: #828282 solid 1px;
   white-space: pre-wrap;
   border: 1px solid #ccc;
@@ -145,7 +150,7 @@ strong {
 /* =Titles */
 .page-title {
   margin-top: 100px;
-  margin-bottom: 125px;
+  margin-bottom: 100px;
   text-align: center; }
 
 .page-title__text {
@@ -201,7 +206,7 @@ main {
 .explore {
   text-align: center;
   color: #828282;
-  margin-top: 140px; }
+  margin-top: 80px; }
 
 .explore__devider {
   font-size: 18px;
