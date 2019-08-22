@@ -1,6 +1,6 @@
-------------------
-Obscure C features
-------------------
+-----------------------
+Some obscure C features
+-----------------------
 :date: 2019-08-21
 :slug: obscure-c-features
 :trans_id: obscure-c-features
