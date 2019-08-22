@@ -36,7 +36,7 @@ SOCIAL = (('You can add links in your config file', '#'),
 DEFAULT_PAGINATION = False
 JINJA_ENVIRONMENT = {
     "extensions": ['jinja2.ext.i18n', 'jinja2.ext.do',
-                   'jinja2htmlcompress.HTMLCompress'],
+                   'jinja2htmlcompress.SelectiveHTMLCompress'],
 }
 
 def extract_trans(article, lang, url):
