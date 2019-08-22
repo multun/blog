@@ -2,7 +2,7 @@
 {% extends "base.html" %}
 {% block title %}{{ article.title }} - {{SITENAME}}{% endblock title %}
 {% block head_meta -%}
-{{ head_meta(author=article.author, ) }}
+{{ head_meta(article.author, SITENAME) }}
 {% endblock %}
 {% block content %}
 <section id="content" class="article content">
