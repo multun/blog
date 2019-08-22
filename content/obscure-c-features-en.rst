@@ -4,6 +4,7 @@ Some obscure C features
 :date: 2019-08-21
 :slug: obscure-c-features
 :trans_id: obscure-c-features
+:lang: en
 :category: programming
 :tags: C, programming, fun facts
 
@@ -16,7 +17,7 @@ If you spent a few years programming in C, you're probably much more confident a
 
 Both the C language and its standard library are quite close to the smallest they could be.
 
-The current most used version of the language, c99, gained some new features over the years, many of which are completely unknown to most C programmers (Older specifications obviously also have some dark corners).
+The current most used version of the language, c99, brought a bunch of new features, many of which are completely unknown to most C programmers (Older specifications obviously also have some dark corners).
 
 Here are the ones I know about:
 
@@ -26,13 +27,11 @@ Sizeof may have side effects
 
 .. code-block:: c
 
-   int main() {
-       int n = 5;
-       printf("%zu\n", sizeof(int *[n++]));
-       printf("%d\n", n);
+   int main(void) {
+       return sizeof(int[printf("ooops\n")]);
    }
 
-It's because variadic types may require evaluating arbitrary code.
+:c:`sizeof` on Variadic types require evaluating arbitrary code!
 
 Hexadecimal float with an exponent
 ===================================
@@ -44,6 +43,7 @@ Hexadecimal float with an exponent
    }
 
 :c:`p` stands for power, and is followed by a base 10 encoded signed two exponent.
+The expression has type :c:`double`, but you can change it to float by appending a :c:`f` to the literal.
 
 Compatible declarations and array function parameters
 =====================================================
@@ -71,11 +71,11 @@ Compatible declarations and array function parameters
 
 There are *plenty* of things going on there:
 
-- One can declare multiple times the same function as long as their declarations are compatible, which means that if they have parameters, both declarations must have compatible ones. Declaration must also consistently use :c:`...`
+- One can declare multiple times the same function as long as their declarations are compatible, which means that if they have parameters, both declarations must have compatible ones. Declaration must also consistently use :c:`...`.
 - If the size of some array dimension is unknown at declaration time, one can write :c:`[*]` instead.
-- You can enclose type qualifiers inside the array brackets, to add some informations about the properties to the given array dimension. If the keyword :c:`static` is given on the first dimension, the array dimension size is interpreted as an actual minimum size.
+- You can enclose type qualifiers inside the array brackets, to add some informations about the properties of the array. If the keyword :c:`static` is present, the array dimension size is interpreted as an actual minimum size, instead of being ignored. Type qualifiers and :c:`static` can only be inside the first array dimension's brackets.
 - The compiler should use new declarations to fill in missing informations about the function's prototype. That's why uncommenting any of declaration 5 and 6 should trigger an error: 666 isn't the known array dimension size. CLang ignores this. In fact, it doesn't seem to care at all about declaration merging.
-- The size of the first dimension doesn't actually matter, so it gets ignored by the compiler. That's why declaration :math:`2` and :math:`4` do not conflict, even though the first dimension doesn't have the same size.
+- The size of the first dimension doesn't actually matter, so it gets ignored by the compiler. That's why declaration :math:`2` and :math:`4` do not conflict, even though their first dimension doesn't have the same size.
 
 Compile-time tree structures
 ==========================================
@@ -159,12 +159,12 @@ Preprocessor is a functional language
 
 You can pass a macro as a parameter to another macro.
 
-Typedef is a type qualifier
-===========================
+Typedef is almost a type qualifier
+==================================
 
-:c:`typedef` works just like :c:`inline` or :c:`static`.
+:c:`typedef` works almost like :c:`inline` or :c:`static`.
 
-Thus, you should be able to write
+You should be able to write
 
 .. code-block:: c
 
@@ -173,7 +173,7 @@ Thus, you should be able to write
 :c:`a[b]` is a syntactic sugar
 ==============================
 
-I know, I know, nothing crazy. But funny nonetheless !
+I know, I know, nothing crazy. But funny nonetheless!
 
 :c:`a[b]` is literally equivalent to :c:`*(a + b)`.
 You can thus write some absolute madness such as :c:`41[yourarray + 1]`.
@@ -223,7 +223,7 @@ It does nothing.
    }
 
 
-That's all I got !
+That's all I got!
 
 I found most of these reading the specification, some others while reading production code.
 
