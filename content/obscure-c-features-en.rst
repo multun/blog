@@ -159,8 +159,40 @@ Preprocessor is a functional language
 
 You can pass a macro as a parameter to another macro.
 
-Typedef is almost a type qualifier
-==================================
+You can interleave switches and regular code
+============================================
+
+.. code-block:: c
+
+   #include <stdio.h>
+   #include <stdlib.h>
+   #include <err.h>
+
+   int main(int argc, char *argv[]) {
+       if (argc != 2)
+           errx(1, "Usage: %s DESTINATION", argv[0]);
+
+       int destination = atoi(argv[1]);
+
+       int i = 0;
+       switch (destination) {
+           for (; i < 2; i++) {
+           case 0: puts("0");
+           case 1: puts("1");
+           case 2: puts("2");
+           case 3: puts("3");
+           case 4: puts("4");
+           default:
+           }
+       }
+       return 0;
+   }
+
+These things are known as `Duff's devices <https://en.wikipedia.org/wiki/Duff%27s_device>`_.
+Among other things, they enable easy manual loop unrolling.
+
+Typedef is almost a storage class
+=================================
 
 :c:`typedef` works almost like :c:`inline` or :c:`static`.
 
@@ -228,3 +260,5 @@ That's all I got!
 I found most of these reading the specification, some others while reading production code.
 
 Happy C adventures :)
+
+*EDIT: I don't even know how I managed to forget Duff's devices. Thanks to reddit user needadvicebadly for bringing this up*
