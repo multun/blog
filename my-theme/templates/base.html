@@ -59,9 +59,10 @@
             {% endfor %}
           </ul>
         </div>
-        {% if lang_siteurls %}
         <div class="ml1em language-buttons container-vcenter falign-right">
-	  {% for lang, lang_siteurl in lang_siteurls.items() %}
+          <div>
+          {%- if lang_siteurls -%}
+	  {%- for lang, lang_siteurl in lang_siteurls.items() -%}
           <a class="categories__item vertical-center" href={% if article and lang != DEFAULT_LANG %}"{{ siteurl }}/{{ article | extract_trans(lang, url) }}"
           {% elif article %}"{{ lang_siteurl }}/{{ article.url }}"
           {% elif page and lang != DEFAULT_LANG %}"{{ siteurl }}/{{ page | extract_trans(lang, url) }}"
@@ -70,9 +71,17 @@
           {% elif tag %}"{{ lang_siteurl }}/{{ tag.url }}"
           {% else %}"{{ lang_siteurl }}/"{% endif %}
 >{{ lang }}</a>
-          {% endfor %}
+          {%- endfor -%}
+          {%- endif -%}
+          </div>
+          <ul class="social-links">
+	    {% for platform, social_link in SOCIAL %}
+            <a href="{{ social_link }}" class="social-links__entry" target="_blank">
+              <i class="fa fa-{{ platform }}"></i>
+            </a>
+            {% endfor %}
+          </ul>
         </div>
-        {% endif %}
       </header>
 
       <main>

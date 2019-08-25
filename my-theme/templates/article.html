@@ -1,6 +1,6 @@
 {% from 'meta.html' import head_meta with context %}
 {% extends "base.html" %}
-{% block title %}{{ article.title }} - {{SITENAME}}{% endblock title %}
+{% block title %}{{ article.title }}{{ " - " }}{{SITENAME}}{% endblock title %}
 {% block head_meta -%}
 {{ head_meta(article.author, SITENAME) }}
 {% endblock %}

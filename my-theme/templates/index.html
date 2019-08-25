@@ -1,6 +1,17 @@
 {% extends "base.html" %}
-{% block navclass %}active{%endblock%}
+{% block navclass %}active{% endblock %}
 {% block content %}
+
+{% for page in hidden_pages %}
+  {% if page.front == "true" %}
+    <section id="content" class="article content">
+      <div class="entry-content">
+        {{ page.content }}
+      </div>
+    </section>
+  {% endif %}
+{% endfor %}
+
 <ul class="list-posts">
     {% for article in articles_page.object_list %}
         <li class="post-teaser">
