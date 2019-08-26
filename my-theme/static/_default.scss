@@ -221,6 +221,23 @@ main {
     padding: 1em;
 }
 
+.post-teaser {
+    margin-bottom: 2em;
+    font-weight: 700;
+}
+
+.post-teaser__title {
+    font-size: 22px;
+    color: $iron;
+}
+
+.post-teaser__date {
+    font-size: 16px;
+    float: right;
+    vertical-align: middle;
+    color: $cloudy;
+}
+
 .post-tag {
     padding: 1em;
 }
