@@ -51,7 +51,7 @@
   <body id="index" class="archive">
     <div class="wrapper">
       <header class="header">
-        <div class="mr1em">
+        <div id="header-title">
           <a href="{{ SITEURL }}/" class="logo">{{ SITENAME }}</a>
           <ul class="menu">
             {% for p in pages %}
@@ -59,7 +59,7 @@
             {% endfor %}
           </ul>
         </div>
-        <div class="ml1em language-buttons container-vcenter falign-right">
+        <div class="language-buttons container-vcenter falign-right">
           <div>
           {%- if lang_siteurls -%}
 	  {%- for lang, lang_siteurl in lang_siteurls.items() -%}
@@ -74,13 +74,13 @@
           {%- endfor -%}
           {%- endif -%}
           </div>
-          <ul class="social-links">
+          <div class="social-links">
 	    {% for platform, social_link in SOCIAL %}
             <a href="{{ social_link }}" class="social-links__entry" target="_blank">
               <i class="fa fa-{{ platform }}"></i>
             </a>
             {% endfor %}
-          </ul>
+          </div>
         </div>
       </header>
 
@@ -101,6 +101,7 @@
       </div>
       {% block footer %}
       {% endblock %}
+      </div>
     </div>
   </body>
 </html>

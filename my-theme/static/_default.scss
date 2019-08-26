@@ -1,3 +1,7 @@
+$max-page-width: 800px;
+$page-margin: 20px;
+
+
 /* =Base */
 .display-inh {
     display: inherit;
@@ -95,8 +99,9 @@ strong {
 
 /* =Header */
 .wrapper {
-    max-width: 800px;
+    max-width: $max-page-width + 2 * $page-margin;
     margin: 100px auto;
+    padding: 0 $page-margin;
 }
 
 .header {
@@ -106,10 +111,14 @@ strong {
     flex-wrap: wrap;
 }
 
-.language-buttons {
-    padding-top: 1em;
-    padding-bottom: 1em;
+#header-title {
     flex-grow: 1;
+}
+
+.language-buttons {
+    flex-grow: 1;
+    margin: 1em 0;
+    padding: 0 1em;
 }
 
 .container-vcenter {
@@ -124,14 +133,6 @@ strong {
 
 .falign-center {
     justify-content: center
-}
-
-.mr1em {
-    margin-right: 1em;
-}
-
-.ml1em {
-    margin-left: 1em;
 }
 
 .badge-font-size {
@@ -201,18 +202,6 @@ strong {
     color: $cloudy;
 }
 
-.post-title {
-    margin-bottom: 110px;
-}
-
-.post-title__text {
-    font-size: 40px;
-}
-
-.post-title__subtitle {
-    font-size: 20px;
-}
-
 /* =Home page */
 
 main {
@@ -227,11 +216,6 @@ main {
     margin-top: 2em;
 }
 
-.post-teaser {
-    margin-bottom: 2em;
-    font-weight: 700;
-}
-
 .post-tags {
     display: inline-block;
     padding: 1em;
@@ -239,18 +223,6 @@ main {
 
 .post-tag {
     padding: 1em;
-}
-
-.post-teaser__title {
-    font-size: 22px;
-    color: $iron;
-}
-
-.post-teaser__date {
-    font-size: 16px;
-    float: right;
-    vertical-align: middle;
-    color: $cloudy;
 }
 
 /* =Explore */
@@ -329,59 +301,33 @@ main {
     margin-top: 100px;
 }
 
-@media (max-width: 800px) {
+@media (max-width: $max-page-width) {
     /* =Base */
-    p {
-        font-size: 16px;
-        line-height: 1.6;
-    }
-
-    .wrapper {
-        width: 80%;
-    }
 
     .navigation {
         @include centered-block();
     }
 
-    .social-links {
-        font-size: 30px;
+    header {
+        text-align: center;
+    }
+
+    #header-title {
+        width: 100%;
+    }
+
+    .language-buttons {
+        justify-content: center !important;
+    }
+
+
+    // less margin, less scrolling
+    div.wrapper {
+        margin-top: 50px;
     }
 
     .page-title {
         margin-top: 80px;
         margin-bottom: 60px;
-    }
-
-    .page-title__text {
-        font-size: 40px;
-    }
-
-    .page-title__subtitle {
-        font-size: 18px;
-    }
-
-    .post-teaser__title {
-        font-size: 18px;
-        @include centered-block();
-    }
-
-    .post-teaser__date {
-        font-size: 16px;
-        margin-top: 10px;
-        float: none;
-        @include centered-block();
-    }
-
-    .explore {
-        margin-top: 80px;
-    }
-
-    .post-title__text {
-        font-size: 28px;
-    }
-
-    .post-title__subtitle {
-        font-size: 18px;
     }
 }
