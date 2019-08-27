@@ -1,12 +1,9 @@
 {% extends "base.html" %}
-{% block navclass %}active{% endblock %}
 {% block content %}
 
 {% for page in hidden_pages %}
   {% if page.front == "true" %}
-    <article>
-      {{ page.content }}
-    </article>
+    {{ page.content }}
   {% endif %}
 {% endfor %}
 

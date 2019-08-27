@@ -1,7 +1,6 @@
-{% extends "index.html" %}
+{% extends "base.html" %}
 {% block title %}{{ SITENAME }}{{ " - Articles by " }}{{ author }}{% endblock %}
-{% block navclass %}{%endblock%}
 {% block content %}
-      <p>{% trans %}Articles by{% endtrans %} {{ " " }} {{ author }}</p>
-      {{ super() }}
+<p>{% trans %}Articles by{% endtrans %}{{ " " }}{{ author }}</p>
+{{ post_teasers(articles_page.object_list) }}
 {% endblock %}

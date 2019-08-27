@@ -1,9 +1,8 @@
-{% extends "index.html" %}
+{% extends "base.html" %}
 {% block title %}{{ SITENAME }}{{ " - " }}{{ tag }}{% endblock %}
-{% block navclass %}{%endblock%}
 {% block content %}
 {% trans tag=("<i>" ~ (tag | e) ~ "</i>") -%}
 Articles tagged as {{ tag }}
 {%- endtrans %}
-{{ super() }}
+{{ post_teasers(articles_page.object_list) }}
 {% endblock %}
