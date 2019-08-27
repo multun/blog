@@ -40,6 +40,7 @@ JINJA_ENVIRONMENT = {
                    'jinja2htmlcompress.HTMLCompress'],
 }
 
+
 def extract_trans(article, lang, url):
     translations = getattr(article, "translations", [])
     print('found', translations)
@@ -47,6 +48,7 @@ def extract_trans(article, lang, url):
         if trans.lang == lang:
             return trans.url
     return url
+
 
 JINJA_FILTERS = {
     "extract_trans": extract_trans,
@@ -59,7 +61,8 @@ PAGE_TRANSLATION_ID = ["trans_id"]
 # I18N_GETTEXT_DOMAIN = 'messages'
 
 # Uncomment following line if you want document-relative URLs when developing
-#RELATIVE_URLS = True
+# RELATIVE_URLS = True
+
 PLUGINS = ["i18n_subsites", "simple_footnotes"]
 PLUGIN_PATHS = ['plugins']
 I18N_SUBSITES = {

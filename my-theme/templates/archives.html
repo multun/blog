@@ -1,20 +1,10 @@
 {% extends "base.html" %}
-{% block title %}Archives{%endblock%}
+{% block title %}Archives{% endblock %}
 {% block content %}
-
 <div>
-  {% for year, date_year in dates|groupby( 'date.year' )|sort(reverse=True) %}  
-  <h3><a href="{{SITEURL}}/{{year}}"  class="text">Archive for {{ year }}</a></h3>
-  {% for article in date_year %}
-  <ul class="list-posts">
-    <li class="post-teaser">
-      <a href="{{ SITEURL }}/{{ article.url }}">
-        <span class="post-teaser__title">{{ article.title | striptags }}</span>
-        <span class="post-teaser__date">{{ article.locale_date }}</span>
-      </a>
-    </li>
-  </ul>
-  {% endfor %}
+  {% for year, date_year in dates|groupby( 'date.year' )|sort(reverse=True) %}
+  <h3><a href="{{SITEURL}}/{{year}}">Archive for {{ year }}</a></h3>
+  {{ post_teasers(date_year) }}
   {% endfor %}
 </div>
 {% endblock %}

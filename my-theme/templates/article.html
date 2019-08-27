@@ -6,23 +6,13 @@
 {% endblock %}
 {% block content %}
 <article>
-  <h1 class="page-title">
-    <div>
-      <span class="page-title__text">{{ article.title }}</span>
-      {% import 'translations.html' as translations with context %}
-      <sub><small>{{ translations.translations_for(article) }}</small></sub>
-    </div>
-    {% if article.subtitle %}
-    <div class="page-title__subtitle">{{ article.subtitle }}</div>
-    {% endif %}
-  </h1>
-
+  {{ page_title(article) }}
   {{ article.content }}
   {% include 'disqus.html' %}
 </article>
 {% endblock %}
 {% block footer_stars %}
-<div class="article__about">
+<div class="article_about">
   {% set authors=[] %}
   {% for author in article.authors %}
   {% do authors.append('<a href="' ~ (SITEURL | e) ~ "/" ~ (author.url | e) ~ '">' ~ (author | e) ~ '</a>') %}

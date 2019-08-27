@@ -4,22 +4,11 @@
 
 {% for page in hidden_pages %}
   {% if page.front == "true" %}
-    <section id="content" class="article content">
-      <div class="entry-content">
-        {{ page.content }}
-      </div>
-    </section>
+    <article>
+      {{ page.content }}
+    </article>
   {% endif %}
 {% endfor %}
 
-<ul class="list-posts">
-    {% for article in articles_page.object_list %}
-        <li class="post-teaser">
-            <a href="{{ SITEURL }}/{{ article.url }}">
-                <span class="post-teaser__title">{{ article.title | striptags }}</span>
-                <span class="post-teaser__date">{{ article.locale_date }}</span>
-            </a>
-        </li>
-    {% endfor %}
-</ul>
+{{ post_teasers(articles_page.object_list) }}
 {% endblock content %}

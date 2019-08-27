@@ -1,9 +1,31 @@
 {% from 'meta.html' import head_meta with context %}
+{% import 'translations.html' as translations with context %}
+{% macro page_title(page) %}
+<div class="page-title">
+  <h1 class="d-inline page-title_text">{{ page.title }}</h1>
+  {{ " " }}<sub>{{ translations.translations_for(page) }}</sub>
+  {% if page.subtitle %}
+  <div class="page-title_subtitle">{{ page.subtitle }}</div>
+  {% endif %}
+</div>
+{% endmacro %}
+{% macro post_teasers(articles) %}
+<ul class="post-teasers">
+  {% for article in articles %}
+  <li>
+    <a href="{{ SITEURL }}/{{ article.url }}">
+      <span class="post-teaser_title">{{ article.title | striptags }}</span>
+      <span class="post-teaser_date">{{ article.locale_date }}</span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% endmacro %}
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if lt IE 7]>      <html lang="{{ main_lang }}" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="{{ main_lang }}" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="{{ main_lang }}" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="{{ main_lang }}" class="no-js"> <!--<![endif]-->
   <head>
     {% block head %}
     <title>{% block title %}{{ SITENAME }}{% endblock %}</title>
@@ -48,22 +70,22 @@
     {% endif %}
     {% endblock head %}
   </head>
-  <body id="index" class="archive">
+  <body>
     <div class="wrapper">
       <header class="header">
         <div id="header-title">
           <a href="{{ SITEURL }}/" class="logo">{{ SITENAME }}</a>
           <ul class="menu">
             {% for p in pages %}
-            <li class="menu__entry{% if p == page %} active{% endif %}"><a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a></li>
+            <li class="menu_entry{% if p == page %} active{% endif %}"><a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a></li>
             {% endfor %}
           </ul>
         </div>
         <div class="language-buttons container-vcenter falign-right">
           <div>
           {%- if lang_siteurls -%}
-	  {%- for lang, lang_siteurl in lang_siteurls.items() -%}
-          <a class="categories__item vertical-center" href={% if article and lang != DEFAULT_LANG %}"{{ siteurl }}/{{ article | extract_trans(lang, url) }}"
+          {%- for lang, lang_siteurl in lang_siteurls.items() -%}
+          <a class="categories_item vertical-center" href={% if article and lang != DEFAULT_LANG %}"{{ siteurl }}/{{ article | extract_trans(lang, url) }}"
           {% elif article %}"{{ lang_siteurl }}/{{ article.url }}"
           {% elif page and lang != DEFAULT_LANG %}"{{ siteurl }}/{{ page | extract_trans(lang, url) }}"
           {% elif page %}"{{ lang_siteurl }}/{{ page.url }}"
@@ -75,8 +97,8 @@
           {%- endif -%}
           </div>
           <div class="social-links">
-	    {% for platform, social_link in SOCIAL %}
-            <a href="{{ social_link }}" class="social-links__entry" target="_blank">
+            {% for platform, social_link in SOCIAL %}
+            <a href="{{ social_link }}" class="social-links_entry" target="_blank">
               <i class="fa fa-{{ platform }}"></i>
             </a>
             {% endfor %}
@@ -89,12 +111,12 @@
         {% endblock %}
       </main>
       <div class="explore">
-        <div class="explore__devider">*****</div>
+        <div class="explore_devider">*****</div>
         {% block footer_stars %}
-        <div class="explore__label"><div class="explore__label">{% trans %}Explore the different categories{% endtrans %}</div>
+        <div class="explore_label"><div class="explore_label">{% trans %}Explore the different categories{% endtrans %}</div>
         <ul class="categories">
           {% for tag, articles in tags|sort %}
-          <li class="categories__item"><a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a></li>
+          <li class="categories_item"><a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a></li>
           {% endfor %}
         </ul>
         {% endblock %}
