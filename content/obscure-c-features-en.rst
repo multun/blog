@@ -182,7 +182,7 @@ You can interleave switches and regular code
            case 2: puts("2");
            case 3: puts("3");
            case 4: puts("4");
-           default:
+           default:;
            }
        }
        return 0;
