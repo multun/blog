@@ -65,6 +65,7 @@ PAGE_TRANSLATION_ID = ["trans_id"]
 
 PLUGINS = ["i18n_subsites", "simple_footnotes"]
 PLUGIN_PATHS = ['plugins']
+
 I18N_SUBSITES = {
         'fr': {
             'SITENAME': 'Crêpes et informatique',
@@ -75,4 +76,20 @@ I18N_SUBSITES = {
         #     'LOCALE': 'en_US',            #This is somewhat redundant with DATE_FORMATS, but IMHO more convenient
         #     'SITEURL': '../', # silly hack
         # },
+}
+
+PAGE_EXCLUDES = [
+    "static",
+]
+
+ARTICLE_EXCLUDES = [
+    "static",
+]
+
+STATIC_PATHS = [
+    "static",
+]
+
+EXTRA_PATH_METADATA = {
+    'static/resume.html': {'path': 'resume.html'},
 }
