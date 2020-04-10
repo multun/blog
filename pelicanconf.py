@@ -63,8 +63,16 @@ PAGE_TRANSLATION_ID = ["trans_id"]
 # Uncomment following line if you want document-relative URLs when developing
 # RELATIVE_URLS = True
 
+from pathlib import Path
+plugins_dir = str(Path("plugins").absolute())
+
+# relative imports inside plugins are messed up
+import sys
+sys.path.append(plugins_dir)
+
+
 PLUGINS = ["i18n_subsites", "simple_footnotes"]
-PLUGIN_PATHS = ['plugins']
+PLUGIN_PATHS = [plugins_dir]
 
 I18N_SUBSITES = {
         'fr': {
