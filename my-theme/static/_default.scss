@@ -71,6 +71,13 @@ blockquote {
     }
 }
 
+/* =Spacers */
+
+hr.docutils {
+  margin: 4rem 5%;
+  opacity: 0.5;
+}
+
 /* =Inline code */
 p > code, li > code {
   padding: .1em .3em;
