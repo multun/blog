@@ -202,6 +202,8 @@ Let's see how it performs:
 
 But:
 
+- signals coalesce a second time in the lookup table (the first was kernel land)
+- the current implementation does not preserve signal order (but could)
 - it can't be used as is in an event loop (see the next section for a workaround)
 - it needs more code / is less efficient for architectures which can't write big
   integers in a single atomic instruction (these architectures very uncommon,
@@ -221,6 +223,11 @@ loop, which is definitely a plus.
 
 ------------
 
+In the end, this technique is very far from being a silver bullet: It has a
+number of downsides, which makes for a pretty specific usecase.
+
+If you're specificaly looking for a way to handle the edge case of the pipe
+trick where the pipe fills up, this trick could work for you :)
 
 I really enjoyed writing this article, and I hope you enjoyed reading it!
 
