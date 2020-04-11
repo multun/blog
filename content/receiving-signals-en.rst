@@ -135,6 +135,7 @@ data model, thanks to which I learned about this revision trick.
       architectures.
 
       /!\ this typedef is architecture dependent, see the full source /!\
+                    https://github.com/multun/signal-lut
    */
    typedef /* some type */ lsig_atomic_t;
 
@@ -192,9 +193,7 @@ data model, thanks to which I learned about this revision trick.
 
        state.lut_consumer_freshness = cached_lut_producer_freshness;
        return events->count;
-   **
-
-**`You can read the full example here <https://github.com/multun/signal-lut>`_.**
+   }
 
 Let's see how it performs:
 
@@ -224,3 +223,5 @@ loop, which is definitely a plus.
 
 
 I really enjoyed writing this article, and I hope you enjoyed reading it!
+
+Check out the full source code here: `https://github.com/multun/signal-lut <https://github.com/multun/signal-lut>`_
