@@ -7,24 +7,23 @@ An alternate way of receiving signals
 :lang: en
 :category: programming
 :tags: C, programming, system programming
-:status: draft
 
 .. role:: c(code)
    :language: c
    :class: highlight
 
 If you've ever dealt with signal handling, you probably still have in mind how
-*painful* of an experience that was: making a reliably working signal handler
-often is an **astonishingly difficult task**.
+*painful* of an experience that was: making a reliable signal handler often is
+an **astonishingly difficult task**.
 
-The reason lies in the way signal handlers work: they interupt whatever work was
+The reason lies in the way signal handlers work: they interrupt whatever work was
 being done, even the work that really shouldn't be.
 
 Because of the very limited set of actions that can be done in such conditions,
 people found ways around it:
 
 Instead of interrupting the process, the general idea is to write the signal
-somewhere the process can read when it's ready!
+somewhere the process can read when it's ready.
 
 I knew of two ways to implement this same principle, but neither felt
 appropriate. I scratched my head for a few days, and came up with a new one!
@@ -36,7 +35,7 @@ The pipe trick
 ==============
 
 Write the signal number to a pipe in the signal handler, and read it in the main
-program! This trick is very old but works fairly well.
+program. This trick is very old but works fairly well.
 
 It has its issues:
 
@@ -70,12 +69,17 @@ It solves both of the above issues while creating a major one:
 
 It comes with benefits:
 
-- it yields better performance, as it does not interupt the process at all, not even system calls
+- it yields better performance, as it does not interrupt the process at all, not even system calls
 - it also provides a file descriptor, which can be used in event loops
 
 
+------------
+
+I did not like any of these techniques, as signalfd is linux specific, and the
+pipe trick has fork safety and capacity issues. Here's what I came up with:
+
 ===========================
-The versionned lookup table
+The versioned lookup table
 ===========================
 
 This technique, just like the pipe trick, uses on plain old signal handlers.
@@ -101,7 +105,7 @@ Also:
   signal handler side
 
 The design of this technique was heavily inspired by the very interesting etcd
-data model, thanks to which I learnt about this revision trick.
+data model, thanks to which I learned about this revision trick.
 
 .. code-block:: c
 
@@ -125,9 +129,14 @@ data model, thanks to which I learnt about this revision trick.
    */
 
 
-   /* we need a big integer type that can be written in one go
-      unfortunately, sig_atomic_t is not the best we can get. */
-   typedef uintptr_t usize_atomic_t;
+   /* we need a big integer type that can be written in one instruction.
+      unfortunately, sig_atomic_t is not always that big, is often signed,
+      often smaller than needed, and doesn't even work properly on all
+      architectures.
+
+      /!\ this typedef is architecture dependent, see the full source /!\
+   */
+   typedef /* some type */ lsig_atomic_t;
 
 
    struct signal_lut {
@@ -136,19 +145,19 @@ data model, thanks to which I learnt about this revision trick.
        atomic_flag producer_lock;
 
        /* increased by one each time a signal is added to the lookup table */
-       volatile usize_atomic_t lut_producer_revision;
+       volatile lsig_atomic_t lut_producer_revision;
 
        /* the revision of last processed signal */
-       volatile usize_atomic_t lut_consumer_revision;
+       volatile lsig_atomic_t lut_consumer_revision;
 
        /* each cell stores the revision of the most recently received signal */
-       volatile usize_atomic_t producer_signal_revision[MAX_SIGNAL_NUMBER];
+       volatile lsig_atomic_t producer_signal_revision[MAX_SIGNAL_NUMBER];
 
        /* each cell stores the revision of the last processed signal */
-       volatile usize_atomic_t consumer_signal_revision[MAX_SIGNAL_NUMBER];
+       volatile lsig_atomic_t consumer_signal_revision[MAX_SIGNAL_NUMBER];
    };
 
-   static struct signal_lut state = SIGNAL_LUT_INIT;
+   static struct signal_lut state;
 
    void signal_lut_handler(int signum)
    {
@@ -157,7 +166,7 @@ data model, thanks to which I learnt about this revision trick.
            continue;
 
        /* update the signal freshness */
-       usize_atomic_t sig_id = ++state.lut_producer_freshness;
+       lsig_atomic_t sig_id = ++state.lut_producer_freshness;
        state.producer_signal_freshness[signum] = sig_id;
 
        /* release the handler lock */
@@ -167,7 +176,7 @@ data model, thanks to which I learnt about this revision trick.
    int signal_lut_read(struct signal_list *events)
    {
        /* read events from the array */
-       usize_atomic_t cached_lut_producer_freshness = state.lut_producer_freshness;
+       lsig_atomic_t cached_lut_producer_freshness = state.lut_producer_freshness;
 
        /* stop if no new event was received */
        if (cached_lut_producer_freshness == state.lut_consumer_freshness)
@@ -183,9 +192,9 @@ data model, thanks to which I learnt about this revision trick.
 
        state.lut_consumer_freshness = cached_lut_producer_freshness;
        return events->count;
-   }
+   **
 
-`You can read a full example here <https://github.com/multun/signal-lut>`_.
+**`You can read the full example here <https://github.com/multun/signal-lut>`_.**
 
 Let's see how it performs:
 
@@ -194,20 +203,24 @@ Let's see how it performs:
 
 But:
 
-- it can't be used in an event loop
+- it can't be used as is in an event loop (see the next section for a workaround)
+- it needs more code / is less efficient for architectures which can't write big
+  integers in a single atomic instruction (these architectures very uncommon,
+  and it can be worked around using :c:`sigprocmask`)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pipe + versionned lookup table
+pipe + versioned lookup table
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The pipe trick dropping messages when completly full is the main reason why I
-started looking for a new technique.
+The pipe trick not being entirely reliable (it must drop messages the pipe is
+full) is one of the main reasons why I started looking for a new technique.
 
 This issue can be addressed by using the lookup table as a fallback when the
 pipe is full. The file descriptor from the pipe can still be used in an event
-loop, which is definitely a plus!
+loop, which is definitely a plus.
 
 
 ------------
 
-I really enjoyed writting this article, and I hope you enjoyed reading it!
+
+I really enjoyed writing this article, and I hope you enjoyed reading it!
