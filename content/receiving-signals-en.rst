@@ -166,9 +166,9 @@ data model, thanks to which I learned about this revision trick.
        while (atomic_flag_test_and_set_explicit(&state.producer_lock, memory_order_acquire))
            continue;
 
-       /* update the signal freshness */
-       lsig_atomic_t sig_id = ++state.lut_producer_freshness;
-       state.producer_signal_freshness[signum] = sig_id;
+       /* update the signal revision */
+       lsig_atomic_t sig_id = ++state.lut_producer_revision;
+       state.producer_signal_revision[signum] = sig_id;
 
        /* release the handler lock */
        atomic_flag_clear_explicit(&state.producer_lock, memory_order_release);
@@ -177,21 +177,21 @@ data model, thanks to which I learned about this revision trick.
    int signal_lut_read(struct signal_list *events)
    {
        /* read events from the array */
-       lsig_atomic_t cached_lut_producer_freshness = state.lut_producer_freshness;
+       lsig_atomic_t cached_lut_producer_revision = state.lut_producer_revision;
 
        /* stop if no new event was received */
-       if (cached_lut_producer_freshness == state.lut_consumer_freshness)
+       if (cached_lut_producer_revision == state.lut_consumer_revision)
            return events->count;
 
        for (size_t i = 0; i < MAX_SIGNAL_NUMBER; i++) {
-           if (state.consumer_signal_freshness[i] == state.producer_signal_freshness[i])
+           if (state.consumer_signal_revision[i] == state.producer_signal_revision[i])
                continue;
 
            signal_list_add(events, i);
-           state.consumer_signal_freshness[i] = state.producer_signal_freshness[i];
+           state.consumer_signal_revision[i] = state.producer_signal_revision[i];
        }
 
-       state.lut_consumer_freshness = cached_lut_producer_freshness;
+       state.lut_consumer_revision = cached_lut_producer_revision;
        return events->count;
    }
 
