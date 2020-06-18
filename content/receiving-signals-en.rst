@@ -82,7 +82,7 @@ pipe trick has fork safety and capacity issues. Here's what I came up with:
 The versioned lookup table
 ===========================
 
-This technique, just like the pipe trick, uses on plain old signal handlers.
+This technique, just like the pipe trick, uses plain old signal handlers.
 It relies on these two base principles:
 
 - the main program acts as a consumer. It polls the producer for new updates
@@ -206,7 +206,7 @@ But:
 - the current implementation does not preserve signal order (but could)
 - it can't be used as is in an event loop (see the next section for a workaround)
 - it needs more code / is less efficient for architectures which can't write big
-  integers in a single atomic instruction (these architectures very uncommon,
+  integers in a single atomic instruction (these architectures are very uncommon,
   and it can be worked around using :c:`sigprocmask`)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
