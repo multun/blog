@@ -5,8 +5,8 @@ An alternate way of receiving signals
 :slug: receiving-signals
 :trans_id: receiving-signals
 :lang: en
-:category: programming
-:tags: C, programming, system programming
+:category: software
+:tags: C, programming
 
 .. role:: c(code)
    :language: c

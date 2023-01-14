@@ -5,8 +5,8 @@ Some obscure C features
 :slug: obscure-c-features
 :trans_id: obscure-c-features
 :lang: en
-:category: programming
-:tags: C, programming, fun facts
+:category: software
+:tags: C, programming
 
 
 .. role:: c(code)

@@ -5,8 +5,8 @@ Les recoins obscurs du C
 :slug: les-recoins-obscurs-du-c
 :trans_id: obscure-c-features
 :lang: fr
-:category: programming
-:tags: C, programming, fun facts
+:category: software
+:tags: C, programming
 
 
 .. role:: c(code)
