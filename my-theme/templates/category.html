@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% block title %}{{ SITENAME }}{{ " - " }}{{ category }}{% endblock %}
-{% block content_title %}
-<ol class="breadcrumb">
-  <li><a href="{{ SITEURL }}"><div class="fa fa-lg fa-home"></div><span class="hidden-xs"> Home</span></a></li>
-  <li><a href="{{ SITEURL }}/categories.html"><div class="fa fa-lg fa-folder-open"></div> Categories <span class="badge">{{ categories|count }}</span></a></li>
-  <li class="active"><div class="fa fa-lg fa-folder-open"></div> {{ category }} <span class="badge">{{ articles|count }}</span></li>
-</ol>
+{% block content %}
+{% trans category=("<i>" ~ (category | e) ~ "</i>") -%}
+Articles tagged as {{ category }}
+{%- endtrans %}
+{{ post_teasers(articles_page.object_list) }}
 {% endblock %}
