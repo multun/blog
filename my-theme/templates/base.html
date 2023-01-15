@@ -115,8 +115,8 @@
         {% block footer_stars %}
         <div class="explore_label"><div class="explore_label">{% trans %}Explore the different categories{% endtrans %}</div>
         <ul class="categories">
-          {% for tag, articles in tags|sort %}
-          <li class="categories_item"><a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a></li>
+          {% for category, articles in categories|sort %}
+          <li class="categories_item"><a href="{{ lang_siteurl }}/{{ category.url }}">{{ category }}</a></li>
           {% endfor %}
         </ul>
         {% endblock %}
