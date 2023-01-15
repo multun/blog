@@ -7,6 +7,21 @@ $page-margin: 20px;
     display: inline;
 }
 
+
+/* =Font sizes */
+
+html {
+    font-size: 20px;
+}
+
+article {
+    line-height: 1.2rem;
+}
+
+.page-title {
+    line-height: 1rem;
+}
+
 body {
     font-family: 'Inconsolata';
     color: $iron;
@@ -23,14 +38,10 @@ a {
     }
 }
 
-p, li {
-    font-size: 20px;
-    line-height: 1.2em;
-}
-
-h2, h3, h4, h5 {
+h1, h2, h3, h4, h5 {
     margin-top: 1.5em;
-    font-size: 2em;
+    font-size: 1.6em;
+    line-height: 1em;
 }
 
 img {
@@ -78,25 +89,65 @@ hr.docutils {
   opacity: 0.5;
 }
 
-/* =Inline code */
-p > code, li > code {
-  padding: .1em .3em;
-  font-size: .75em;
+/* =Footnotes */
+
+.footnote-reference {
+    font-size: 0.7em;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+    top: -0.35em;
+
+    /* shift the reference left by half a char */
+    left: -0.5ex;
+    margin-right: -0.5ex;
+}
+
+.footnote {
+    font-size: 0.8em;
+
+    .label::after {
+	content: "  ";
+	white-space: pre;
+    }
+}
+
+/* =Definitions */
+
+dl.docutils {
+    font-size: 0.9em;
+
+    dt {
+	margin-top: 1.5rem;
+	font-weight: bold;
+    }
+
+    dd {
+	margin-left: 2.5rem;
+	margin-top: 0.1rem;
+    }
+}
+
+
+/* =Code blocks */
+.highlight, .literal {
   border: 1px solid $pencil;
   border-radius: 4px;
   word-break: break-all;
   background-color: $dorian;
+
+  font-size: .8em;
+  padding: .6em;
+
+  pre {
+      margin: 0;
+  }
 }
 
-/* =Bigger code blocks */
-pre {
-    font-size: .8em;
-    padding: .6em;
-    border: $cloudy solid 1px;
-    border: 1px solid $pencil;
-    border-radius: 4px;
-    word-break: break-all;
-    background-color: $dorian;
+/* =Inline code */
+code.highlight, .literal {
+  padding: .1em .3em;
+  font-size: .75em;
 }
 
 strong {
@@ -123,8 +174,8 @@ strong {
 
 .language-buttons {
     flex-grow: 1;
-    margin: 1em 0;
-    padding: 0 1em;
+    margin: 0.8em 0;
+    padding: 0 0.8em;
 }
 
 .container-vcenter {
@@ -146,15 +197,14 @@ strong {
 }
 
 .logo {
-    font-size: 50px;
-    font-weight: 700;
+    font-size: 2.5rem;
+    font-weight: bold;
     color: $iron;
     display: block;
 }
 
 .menu {
     color: $cloudy;
-    font-size: 18px;
     margin: 0.3em 0 0;
     padding: 0px;
     list-style-type: none;
@@ -190,20 +240,21 @@ strong {
 .page-title {
     margin-top:100px;
     margin-bottom:100px;
+    line-height: 2rem;
     text-align: center;
-    font-size: 1.2em;
     & > sub {
-        font-size: 0.9em;
+        font-size: 0.87em;
     }
 }
 
 .page-title_text {
     font-weight: 700;
+    font-size: 1.92em;
 }
 
 .page-title_subtitle {
     font-weight: 400;
-    font-size: 22px;
+    font-size: 1.1em;
     color: $cloudy;
 }
 
@@ -218,7 +269,7 @@ main {
 .post-teasers {
     list-style-type: none;
     padding: 0px;
-    margin-top: 2em;
+    margin-top: 3em;
     & > li {
         margin-bottom: 2em;
         font-weight: 700;
