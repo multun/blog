@@ -271,7 +271,7 @@ main {
     padding: 0px;
     margin-top: 3em;
     & > li {
-        margin-bottom: 2em;
+        margin-bottom: 1.5em;
         font-weight: 700;
     }
 }
@@ -282,12 +282,13 @@ main {
 }
 
 .post-teaser_title {
-    font-size: 22px;
+    font-size: 1.1rem;
     color: $iron;
 }
 
 .post-teaser_date {
-    font-size: 16px;
+    line-height: 1.1rem;
+    font-size: 0.8rem;
     float: right;
     vertical-align: middle;
     color: $cloudy;
@@ -385,5 +386,18 @@ main {
     .page-title {
         margin-top: 80px;
         margin-bottom: 60px;
+    }
+
+
+    // post teasers date positioning
+
+    .post-teaser_title::after {
+	content: "\a";
+	white-space: pre;
+    }
+
+    .post-teaser_date {
+	float: none;
+	margin-left: 0.5rem;
     }
 }
