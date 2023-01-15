@@ -5,4 +5,4 @@
 
 Bienvenue sur mon blog :)
 
-Je parle de programmation, d'informatique en général, et plus !
+J'écris principalement autour du logiciel, du ferroviaire, et peut-être parfois de cuisine. Certains de mes articles ne sont qu'en anglais, n'hésitez-pas à consulter cette version du site !
