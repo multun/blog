@@ -5,4 +5,4 @@
 
 Welcome to my blog :)
 
-I write about programming, computer science in general, and more!
+I write about software and railway stuff
