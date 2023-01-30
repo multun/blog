@@ -16,32 +16,42 @@ and workers name locations.
 Each linear referencing system really is some kind of giant
 ruler, bending and twisting along a linear element.
 
-An LRS addresse looks something like that: ``42+15``
+An LRS address looks something like ``foo+215``, or ``12-320``:
 
-- 42 is a fixed point identifier (like the mile / kilometer marker / post)
-- +15 is an offset from the fixed point
+- ``foo`` and ``12`` are fixed point identifiers (like the mile / kilometer marker / post)
+- ``+215`` and ``-320`` are offsets from the fixed point
 
 Fixed points are physically installed during construction, and pretty
 much never moved or renamed.
 
+.. image:: {attach}images/lrs-fixed-point.svg
+   :width: 100%
+
 When dealing with linear infrastructure, LRS help tremendously:
+
 - an LRS can used to reliably compute distances along the linear element, which can't really be done with GPS
 - almost everything can be engineered, built and maintained within this frame of reference
 
 
-Why it's harder than it seems
-=============================
+Computing distances between addresses
+=====================================
 
-In practice, referencing systems are a pain.
+The basic algorithm for computing the distance between ``a+x`` and ``b+y`` is as follows:
+
+ - start with the negative distance between ``a`` and offset ``x``
+ - add the **distance between fixed points** ``a`` and ``b``
+ - add the distance between ``b`` and offset ``y``
+
+
+Distances between fixed points
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Anomalies
 ~~~~~~~~~
 
 In practice, you usually can't compute the distance between two
-locations using just their addresses, because the address space has:
-
-- gaps: ``a b      c d``
-- cuts: ``a b e f``
+locations using just their addresses, because the address space
+has gaps, or cuts: ``+1 +2 +8 +9``
 
 An anomaly is defined as any gap or cut in an LRS. There are two main
 ways anomalies can be introduced: hierarchical referencing systems,
