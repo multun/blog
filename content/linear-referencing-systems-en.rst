@@ -1,9 +1,9 @@
 ---------------------------------------
-Software and linear referencing systems
+Software and Linear referencing systems
 ---------------------------------------
 :date: 2023-01-15
-:slug: software-lrs
-:trans_id: software-lrs
+:slug: lrs
+:trans_id: lrs
 :lang: en
 :status: draft
 :category: railway
@@ -13,13 +13,16 @@ you probably have encountered one before: alongside roads, pipelines,
 power lines and railways, mile markers or kilometer posts help users
 and workers name locations.
 
+This article is intended to help software engineers wrap their head around
+how to deal with linear referencing systems.
+
 Each linear referencing system really is some kind of giant
-ruler, bending and twisting along a linear element.
+ruler, bending and twisting along a **linear feature**.
 
 An LRS address looks something like ``foo+215``, or ``12-320``:
 
-- ``foo`` and ``12`` are fixed point identifiers (like the mile / kilometer marker / post)
-- ``+215`` and ``-320`` are offsets from the fixed point
+- ``foo`` and ``12`` are **fixed point** identifiers (like the mile / kilometer marker / post)
+- ``+215`` and ``-320`` are **offsets** from the fixed point
 
 Fixed points are physically installed during construction, and pretty
 much never moved or renamed.
@@ -29,121 +32,105 @@ much never moved or renamed.
 
 When dealing with linear infrastructure, LRS help tremendously:
 
-- an LRS can used to reliably compute distances along the linear element, which can't really be done with GPS
+- an LRS can used to reliably compute distances along the linear feature, which can't really be done with GPS
 - almost everything can be engineered, built and maintained within this frame of reference
+- it can be used to associate attributes with infrastructure
+
+Hierarchical referencing systems
+================================
+
+Consider a railway line with multiple parallel tracks. If tracks had entirely
+separate referencing systems, as the line turns, addresses on the
+outer track will become higher than addresses on the inner track.
+
+.. image:: {attach}images/lrs-drift.svg
+   :width: 100%
+
+To mitigate this issue, fixed points can be shared between the line and its tracks.
+This way, addresses stay somewhat close to each other along the line:
+
+.. image:: {attach}images/lrs-shared-fixed-points.svg
+   :width: 100%
+
+Offsets still drift out of sync, but get synchronized back at each fixed point.
+
+There is still one last issue: how are *line addresses mapped to track addresses* and back?
+It's kind of a big deal, as it enables locating things on all of the line's tracks at once,
+such as bridges, tunnels or crossings.
+
+There are a few ways this can be done:
+
+1) use line addresses as track addresses, and the other way around. It can be pretty imprecise.
+2) scale offsets in proportion to the size of sections between fixed points: ``new_offset = old_offset * new_section_len / old_section_len``
+3) if higher precision is needed, line sections between fixed points can be further subdivided.
+   The range of offset each subsection spans then has to be kept track of in a database.
+   Offsets can then be scaled proportionally inside each subsection.
 
 
 Computing distances between addresses
 =====================================
 
-The basic algorithm for computing the distance between ``a+x`` and ``b+y`` is as follows:
+The **basic** algorithm for computing the distance between ``a+x`` and ``b+y`` is as follows:
 
- - start with the negative distance between ``a`` and offset ``x``
- - add the **distance between fixed points** ``a`` and ``b``
- - add the distance between ``b`` and offset ``y``
+- start with the **distance between fixed points** ``a`` and ``b``
+- substract offset ``x``
+- add offset ``y``
 
+The first step of the algorithm is to find out how far ``a`` is from ``b``. Most of the time,
+there needs to be some kind of database which keeps track of the order and distance between fixed
+point in linear features. One notable exception is when fixed point are spaced regularly
+*along the linear feature* [#hierarchical-lrs]_.
 
-Distances between fixed points
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Anomalies
 ~~~~~~~~~
 
-In practice, you usually can't compute the distance between two
-locations using just their addresses, because the address space
-has gaps, or cuts: ``+1 +2 +8 +9``
+Anomalies are exception to the usual algorithm for computing distances along an LRS.
+They can be introduced as a result of changes that disrupt the linear feature,
+such as sections being replaced by others of a different length (such as when creating a bypass).
 
-An anomaly is defined as any gap or cut in an LRS. There are two main
-ways anomalies can be introduced: hierarchical referencing systems,
-and linear element changes.
+There are two kind of anomalies [#line-track-anomalies]_:
 
-Hierarchical referencing systems
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Consider a line with multiple parallel tracks. If each track
-had entirely separate referencing systems, as the line turns, addresses
-on the outer track will become higher than addresses on the inner
-track.
+- fixed point anomalies, where otherwise evenly spaced fixed points are not.
+  These can only happen when fixed points are evenly spaced in the first place.
+- offsets anomalies, where the offset address space has a gap: ``+1 +2 +8 +9``
 
-If you were standing in the middle of these two tracks, there
-would be a major misalignment between track addresses at this point,
-even if addresses were aligned back at the beginning of the line.
 
-Instead of just accepting this geometrical reality, some linear
-referencing systems try to keep track addresses in sync as the line
-turns. A fairly easy way to do so would be to regularly sync up tracks
-by introducing anomalies. As a result, any location on the line has
-kind of (but not really) aligned addresses on each track.
+Case study: SNCF Réseau
+=======================
 
-Mapping line to track addresses
-###############################
+As this blog post is related to my work at SNCF Réseau, the french railway infrastructure manager,
+I thought I could share a practical example of how things are implemented there:
 
-Sometimes, a track uses a positioning system entirely separate from
-its line. Then, a bi-directional mapping from line to track positioning
-systems has to be defined.
+- fixeds point are numbered sequentially from the start of the line up [#sncf-named-fixed-points]_
+- devices are given an address relative to the previous fixed point [#sncf-neg-pk]_
+- one fixed point is built per kilometer [#sncf-named-fixed-points]_
+- when a line has multiple tracks, fixed points are shared by tracks in a hierarchical referencing system [#sncf-standalone-track-lrs]_
 
-In the SNCF case, each valid range in the track positioning system
-has a defined mapping to an address range on the line positioning
-system. Addresses on line and track referencing systems are converted
-back and forth proportionaly.
+Interestingly, every single one of these rules has exceptions, relics of the past haunting
+misinformed software engineers.
 
-Linear element changes
-~~~~~~~~~~~~~~~~~~~~~~
 
-When devices are installed along tracks, they are labelled
-with their LRS location. When there are many such devices, changing
-the address of devices becomes expensive, and thus usually avoided.
-
-Sometimes, changes that would disrupt the LRS have to be made:
-As the rail network evolves, sections of track are replaced by
-others, which may not have the same length (such as when creating
-a bypass).
-
-Such changes introduce dilemma:
-
-- either re-number devices whose address changed
-- introduce an anomaly in the LRS address space
-
-Resolving device locations
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Finding out where a device physically is using its LRS address is
-harder than it seems. Let's assume your rail network is divided into
-sections of tracks. You have a database or track sections, with
-their length and geometry.
-
-You are given an LRS along with the address of a device, and tasked
-to figure out where that is. How does that work?
-
-- if the LRS is a line LRS, the line address needs to be converted
-  into a list of track addresses
-- first, you need to find all track sections which belong to
-  the LRS, along with their begin and end addresses at that time
-- then, you need to find what track sections your address falls
-  into, by comparing begin and end addresses
-- finally, you need to compute the distance between the start
-  address of the track section and the address of your device,
-  taking anomalies into account.
-
-Several things can go wrong:
-
-- you may find out that your address has either too many or zero
-  corresponding track sections
-- the distance between the begin and end addresses of your track section
-  could be different from its actual length
-
-The french railway LRS
-======================
+Jargon
+~~~~~~
 
 LRS
   Système de repérage
 
-LRS Address
-  Point Kilométrique (PK)
-
 Fixed point
   Répère Kilométrique (RK)
 
-When a new line is built, one fixed point is built per kilometer,
-and devices are given an address relative to the previous fixed point [#neg-pk]_.
+LRS Address
+  Point Kilométrique (PK)
 
-.. [#neg-pk] When there is no previous fixed point, addresses are negative offsets from the next fixed point
+
+.. [#hierarchical-lrs] It does not work if fixed points are spaced regularly along the
+		       center line of a train line which has multiple tracks.
+
+.. [#line-track-anomalies] SNCF Réseau also counts the length difference of sections inside a hierarchical LRS as anomalies
+
+.. [#sncf-neg-pk] When there is no previous fixed point, addresses are negative offsets from the next fixed point
+
+.. [#sncf-named-fixed-points] Except one line, which has fixed points identified using letters, which are not evenly spaced either
+
+.. [#sncf-standalone-track-lrs] Some tracks have a LRS that is separate from the line they belong to
