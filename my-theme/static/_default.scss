@@ -43,6 +43,71 @@ h1, h2, h3, h4, h5 {
     line-height: 1em;
 }
 
+/* =Table of contents */
+
+@counter-style cs-numeric {
+  system: numeric;
+  symbols: A B C D E;
+  suffix: " ";
+}
+
+#table-of-contents {
+    margin-top: 3em;
+
+    .topic-title {
+        font-size: 1.6em;
+    }
+
+    > ul {
+        margin-top: 1.7em;
+        margin-left: 1.7em;
+    }
+
+    // make the selector less specific, so that
+    // the > ul margins above take precedence
+    :where(ul) {
+        margin-top: .3em;
+        margin-bottom: .3em;
+        list-style-type: none;
+        list-style-position: outside;
+        // use a custom counter to:
+        //  - have proper hierarchical numbering
+        //  - have lists starting at 0
+        counter-reset: toc -1;
+
+        li {
+            counter-increment: toc;
+            margin-top: .3em;
+            margin-bottom: .3em;
+        }
+
+        // use ::marker instead of ::before
+        // so that list-style-position works
+        li::marker {
+            content: counters(toc, ".") ".  ";
+            font-size: .85em;
+            color: #929292;
+            float: left;
+            clear: both;
+        }
+    }
+
+    // override for second level lists
+    ul ul {
+        margin-top: .15em;
+        margin-bottom: .15em;
+
+        li {
+            margin-top: .15em;
+            margin-bottom: .15em;
+        }
+
+        li::marker {
+            color: #C2C2C2;
+        }
+    }
+}
+
 img {
     margin: 40px auto;
     display: block;
@@ -128,8 +193,43 @@ dl.docutils {
 }
 
 
+/* =Tables */
+
+// add padding to cells
+table.docutils:not(.footnote) {
+    // margins
+    margin-bottom: .7em;
+    td, th {
+        padding: .05em .5em;
+    }
+
+    // remove default borders
+    th, td, & {
+        border: none;
+    }
+
+    // add borders
+    thead {
+        border-bottom: 1px dashed $pencil;
+    }
+    td, th {
+        &:not(:first-child) {
+            border-left: 1px solid $pencil;
+        }
+    }
+}
+
+/* =Figure captions */
+
+.figure > .caption {
+    padding: 0 4em;
+    font-size: 70%;
+    text-align: center;
+}
+
+
 /* =Code blocks */
-.highlight, .literal {
+.highlight, .literal, .literal-block:not(.text-diagram) {
   border: 1px solid $pencil;
   border-radius: 4px;
   word-break: break-all;
@@ -140,8 +240,23 @@ dl.docutils {
 
   pre {
       margin: 0;
+      line-height: 125%;
   }
 }
+
+.text-diagram {
+    margin-top: .6em;
+    margin-bottom: .6em;
+    font-size: .8em;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    max-width: 100%;
+    box-sizing: content-box;
+    line-height: .95rem;
+}
+
+
 
 /* =Inline code */
 code.highlight, .literal {
