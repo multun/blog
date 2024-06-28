@@ -1,0 +1,10 @@
+         connects to   ┌──────────┐ proxy to ┌──────────────────┐
+     ┌─────────────────┤ ll-proxy ├─────────►│  LLAccessService │
+     │                 └────┬─────┘          └──────────────────┘
+     │                      │ replaces                           
+     │                      ▼                                    
+     │                 ┌────────────────────────────────────────┐
+┌────┴───┐   read      │      memory backed file mapping        │
+│ Client ├────────────►┤                                        │
+└────────┘             │ "Global\CorsairLLAccessServiceAddress" │
+                       └────────────────────────────────────────┘
